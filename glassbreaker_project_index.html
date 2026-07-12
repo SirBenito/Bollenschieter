@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#bde0fe">
+    <title>Retro Glassmorphic Breaker - Wave Edition</title>
+    <!-- Tailwind via CDN is makkelijk voor dev, overweeg lokale build voor productie -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="game-container">
+    <canvas id="gameCanvas" aria-label="Glass Breaker spel"></canvas>
+    <div class="crt-overlay"></div>
+
+    <button id="pause-btn" class="hidden" type="button" aria-label="Pauzeer het spel">Ⅱ</button>
+
+    <div id="start-screen" class="absolute inset-0 flex flex-col justify-center items-center text-center z-20 px-6 py-5">
+        <div class="glass-panel p-7 max-w-sm w-full mx-auto flex flex-col items-center">
+            <h1 class="text-xl md:text-2xl font-black text-gray-800 tracking-tight leading-none mb-1">GLASS</h1>
+            <h1 class="text-2xl md:text-3xl pixel-font text-blue-500 mb-5 drop-shadow-sm">BREAKER</h1>
+
+            <p class="text-xs text-gray-600 mb-4 font-semibold leading-relaxed">
+                Sleep om te richten en laat los om te vuren.<br>
+                Maak kettingreacties en houd de rode lijn vrij.
+            </p>
+
+            <div class="grid grid-cols-3 gap-2 w-full mb-5 text-[10px] font-bold text-gray-700">
+                <div class="bg-white/35 border border-white/50 rounded-xl p-2">💣<br>BOM</div>
+                <div class="bg-white/35 border border-white/50 rounded-xl p-2">⚡<br>LASER</div>
+                <div class="bg-white/35 border border-white/50 rounded-xl p-2">◇<br>SCHILD</div>
+            </div>
+
+            <div class="flex items-center justify-between w-full bg-white/30 p-3 rounded-xl border border-white/40 mb-3">
+                <span class="text-xs font-bold text-gray-700 flex items-center gap-2">📳 Haptische vibraties</span>
+                <label class="switch">
+                    <input type="checkbox" id="vibe-toggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="w-full flex justify-between text-[10px] font-bold text-gray-600 mb-5 px-1">
+                <span>BESTE SCORE</span>
+                <span id="menu-high-score" class="text-blue-600">0</span>
+            </div>
+
+            <button id="start-btn" class="w-full bg-blue-500 text-white font-extrabold text-sm py-4 px-6 rounded-2xl shadow-lg hover:bg-blue-600 active:scale-95 transition-all">
+                START GAME
+            </button>
+            <p class="mt-3 text-[9px] text-gray-500 font-semibold">Desktop: pijltjes + spatie · P om te pauzeren</p>
+        </div>
+    </div>
+
+    <div id="pause-screen" class="absolute inset-0 flex flex-col justify-center items-center text-center z-20 px-6 hidden">
+        <div class="glass-panel p-8 max-w-sm w-full mx-auto flex flex-col items-center">
+            <h1 class="text-xl pixel-font text-blue-500 mb-4">PAUZE</h1>
+            <p class="text-xs text-gray-600 mb-6 font-semibold">Even op adem komen. De wave wacht op jou.</p>
+            <button id="resume-btn" class="w-full bg-blue-500 text-white font-extrabold text-sm py-4 px-6 rounded-2xl shadow-lg active:scale-95 transition-all">VERDER SPELEN</button>
+        </div>
+    </div>
+
+    <div id="game-over-screen" class="absolute inset-0 flex flex-col justify-center items-center text-center z-20 px-6 hidden">
+        <div class="glass-panel p-8 max-w-sm w-full mx-auto flex flex-col items-center">
+            <h1 class="text-2xl pixel-font text-red-500 mb-4">GAME OVER</h1>
+            <p class="text-xs text-gray-500 mb-6 font-semibold">De glazen muur bereikte de gevarenzone.</p>
+
+            <div class="bg-white/30 border border-white/50 p-4 rounded-xl w-full text-left mb-6 space-y-2">
+                <p class="text-xs font-bold text-gray-700 flex justify-between">WAVE BEREIKT: <span id="final-wave" class="text-blue-600">1</span></p>
+                <p class="text-xs font-bold text-gray-700 flex justify-between">EINDSCORE: <span id="final-score" class="text-green-600">0</span></p>
+                <p class="text-xs font-bold text-gray-700 flex justify-between">GLAS GEBROKEN: <span id="final-shattered" class="text-pink-600">0</span></p>
+                <p class="text-xs font-bold text-gray-700 flex justify-between">BESTE COMBO: <span id="final-combo" class="text-amber-600">0</span></p>
+            </div>
+
+            <button id="restart-btn" class="w-full bg-emerald-500 text-white font-extrabold text-sm py-4 px-6 rounded-2xl shadow-lg hover:bg-emerald-600 active:scale-95 transition-all">SPEEL OPNIEUW</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/game.js"></script>
+</body>
+</html>
